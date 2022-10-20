@@ -6,27 +6,18 @@ namespace ShapeCalcApi.Controllers;
 [Route("[controller]")]
 public class TriangleAreaController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private readonly ILogger<TriangleAreaController> _logger;
+    private readonly ICalculator _calculator;
 
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public TriangleAreaController(ILogger<WeatherForecastController> logger)
+    public TriangleAreaController(ILogger<TriangleAreaController> logger)
     {
         _logger = logger;
+        _calculator = new Calculator();
     }
 
-    [HttpGet(Name = "GetTriangleArea")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet()]
+    public double Get(double a, double b, double c)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        return _calculator.GetTriangleArea(a, b, c);
     }
 }

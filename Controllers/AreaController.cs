@@ -5,28 +5,39 @@ namespace ShapeCalcApi.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class AreaController : ControllerBase
-{
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+{   
+    private readonly ILogger<AreaController> _logger;
+    private readonly ICalculator _calculator;
 
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public AreaController(ILogger<WeatherForecastController> logger)
+    public AreaController(ILogger<AreaController> logger)
     {
         _logger = logger;
+        _calculator = new Calculator();
     }
+    
+    [HttpGet()]
+    public double Get(double a, double b, double c)
+    {   
+        bool aFlag = Convert.ToBoolean(a);
+        bool bFlag = Convert.ToBoolean(b);
+        bool cFlag = Convert.ToBoolean(c);
 
-    [HttpGet(Name = "GetArea")]
-    public IEnumerable<WeatherForecast> Get()
-    {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        if (aFlag && !bFlag && !cFlag) 
         {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+            // circle area
+            return _calculator.GetCircleArea(a);
+        } 
+        else if (aFlag && bFlag && !cFlag) 
+        {
+            // rectangle area
+            return _calculator.GetRectArea(a, b);
+        } 
+        else if (aFlag && bFlag && cFlag) 
+        {
+            // triangle area
+            return _calculator.GetTriangleArea(a, b, c);
+        }  
+
+        return 0;
     }
 }

@@ -4,20 +4,20 @@ namespace ShapeCalcApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CircleAreaController : ControllerBase
+public class RectangleAreaController : ControllerBase
 {
-    private readonly ILogger<CircleAreaController> _logger;
+    private readonly ILogger<RectangleAreaController> _logger;
     private readonly ICalculator _calculator;
 
-    public CircleAreaController(ILogger<CircleAreaController> logger)
+    public RectangleAreaController(ILogger<RectangleAreaController> logger)
     {
         _logger = logger;
         _calculator = new Calculator();
     }
 
     [HttpGet()]
-    public double Get(double radius)
+    public double Get(double a, double b)
     {
-        return _calculator.GetCircleArea(radius);
+        return _calculator.GetRectArea(a, b);
     }
 }
